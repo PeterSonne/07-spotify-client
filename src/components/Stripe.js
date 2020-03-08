@@ -21,15 +21,32 @@ class Stripe extends React.Component {
           .post(`${process.env.REACT_APP_API}/pay`, token)
           .then(payment => {
             console.log(payment);
+            if (payment.status == 200) {
+              this.setState({
+                message: {
+                  content: "Payment Successful. Thank you.",
+                  type: "success"
+                }
+              });
+              setTimeout(this.props.closePaywall(), 2000);
+            } else {
+              this.setState({
+                message: {
+                  content: `${payment.raw.message}`,
+                  type: "error"
+                }
+              });
+            }
+          })
+          .catch(err => {
             this.setState({
               message: {
-                content: "Payment Successful. Thank you.",
-                type: "success"
+                content: "API Error - could not make Payment",
+                type: "error"
               }
             });
-            setTimeout(this.props.closePaywall(), 2000);
-          })
-          .catch(err => console.log(err));
+            console.log(err);
+          });
       }
     });
   };
