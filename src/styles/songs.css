@@ -30,6 +30,10 @@
 
 /* Body */
 
+table > tbody > tr {
+  transition: transform 0.4s ease;
+}
+
 #songs > table > tbody > tr:nth-child(even) {
   background: #f4f4f4;
 }

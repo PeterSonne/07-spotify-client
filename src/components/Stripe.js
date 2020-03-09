@@ -28,7 +28,7 @@ class Stripe extends React.Component {
                   type: "success"
                 }
               });
-              setTimeout(this.props.closePaywall(), 2000);
+              setTimeout(this.props.closePaywall, 2000);
             } else {
               this.setState({
                 message: {

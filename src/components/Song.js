@@ -13,17 +13,14 @@ class Song extends React.Component {
     });
     this.setState({ audio });
   }
+  componentWillReceiveProps(newProps) {
+    this.setState({ playing: newProps.song.playing });
+  }
   play = () => {
-    this.state.audio.play();
-    this.setState({
-      playing: true
-    });
+    this.props.onPlaySong(this.props.song);
   };
   stop = () => {
-    this.state.audio.stop();
-    this.setState({
-      playing: false
-    });
+    this.props.onStopSong();
   };
   render() {
     return (
@@ -36,7 +33,7 @@ class Song extends React.Component {
             ></i>
           ) : (
             <i
-              className="button far fa-stop-circle"
+              className="button far fa-pause-circle"
               onClick={e => this.stop()}
             ></i>
           )}

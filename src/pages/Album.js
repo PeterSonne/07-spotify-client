@@ -39,7 +39,7 @@ class Album extends React.Component {
   render() {
     return (
       <div id="page">
-        <Sidebar page="albums" />
+        <Sidebar page="albums" song={this.state.activeSong} />
         <div id="album">
           <div className="album">
             <div

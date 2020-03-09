@@ -8,14 +8,39 @@ import Song from "../components/Song";
 
 class Songs extends React.Component {
   state = {
-    songs: []
+    songs: [],
+    activeSong: {}
   };
+  // methods
+  playSong = song => {
+    console.log(song);
+
+    let songs = this.state.songs.map(e => {
+      // console.log("e.id", e.id);
+      // console.log("song.id", song.id);
+      e.id == song.id ? (e.playing = true) : (e.playing = false);
+      return e;
+    });
+    this.setState({ activeSong: song });
+  };
+  playActive = () => {
+    this.playSong(this.state.activeSong);
+  };
+  stopSong = () => {
+    let song = this.state.activeSong;
+    song.playing = false;
+    this.setState({ activeSong: song });
+  };
+  // lifecycle
   componentWillMount() {
     axios
       .get(`${process.env.REACT_APP_API}/songs`)
       .then(res => {
         if (res.status == 200) {
-          let songs = res.data;
+          let songs = res.data.map(e => {
+            e.playing = false;
+            return e;
+          });
           this.setState({ songs });
         } else {
         }
@@ -27,7 +52,12 @@ class Songs extends React.Component {
   render() {
     return (
       <div id="page">
-        <Sidebar page="songs" />
+        <Sidebar
+          page="songs"
+          song={this.state.activeSong}
+          onStopSong={this.stopSong}
+          onPlaySong={this.playActive}
+        />
         <div id="songs">
           <table>
             <thead>
@@ -41,7 +71,12 @@ class Songs extends React.Component {
             </thead>
             <tbody>
               {this.state.songs.map(e => (
-                <Song song={e} />
+                <Song
+                  song={e}
+                  key={e.id}
+                  onPlaySong={this.playSong}
+                  onStopSong={this.stopSong}
+                />
               ))}
             </tbody>
           </table>
